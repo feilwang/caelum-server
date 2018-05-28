@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd /home/ubuntu/caelum/caelum-server/
+cd /root/caelum/caelum-server/
 echo 'step1 update code'
 echo '============================'
 git pull
