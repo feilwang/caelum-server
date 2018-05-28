@@ -13,6 +13,7 @@ router.route('/register').all(function (req, res, next) {
     } else {
         params = req.query || req.params;
     }
+    console.log('register params:', params);
     signDAO.register(params, function (err, result) {
         if (err) {
             return res.json({
@@ -36,7 +37,7 @@ router.route('/login').all(function (req, res, next) {
     } else {
         params = req.query || req.params;
     }
-    console.log('login params:',params);
+    console.log('login params:', params);
     signDAO.login(params, function (err, result) {
         if (err) {
             return res.json({
@@ -45,7 +46,9 @@ router.route('/login').all(function (req, res, next) {
             });
         }
         if (result.length > 0) {
+            delete result[0].password;
             res.json({
+                data: result[0],
                 success: true,
                 message: '登录成功！'
             });
