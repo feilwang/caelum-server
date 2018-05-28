@@ -15,5 +15,5 @@ forever stop bin/www
 
 echo 'step4 start node server'
 echo '============================'
-forever start -l caelum-server.log bin/www
+forever start -l caelum-server.log -a bin/www
 
