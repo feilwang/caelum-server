@@ -26,7 +26,7 @@ let checkLogin = function (req, res, next) {
     next(userId);
 };
 
-//注册
+//获取用户信息
 router.route('/getUserInfo').all(checkLogin, function (userId, req, res, next) {
     let params;
     if (req.method == "POST") {
@@ -46,6 +46,31 @@ router.route('/getUserInfo').all(checkLogin, function (userId, req, res, next) {
             result.token = util.generateToken(result);
             res.json({
                 data: result,
+                success: true,
+                message: '操作成功！'
+            });
+        }
+    });
+});
+
+//修改用户信息
+router.route('/modifyUserInfo').all(checkLogin, function (userId, req, res, next) {
+    let params;
+    if (req.method == "POST") {
+        params = req.body;
+    } else {
+        params = req.query || req.params;
+    }
+    params.userId = userId;
+    console.log('modifyUserInfo params:', params);
+    userService.modifyUserInfo(params, function (err, result) {
+        if (err) {
+            res.json({
+                success: false,
+                message: err
+            });
+        } else {
+            res.json({
                 success: true,
                 message: '操作成功！'
             });

@@ -24,6 +24,22 @@ function getUserInfo(params, callback) {
     });
 }
 
+function modifyUserInfo(params, callback) {
+    let userId = params.userId;
+    let result = util.validateNull(userId);
+    if (!result.success) {
+        return callback('id不能为空')
+    }
+    usersDAO.modifyUserInfo(params, function (err, result) {
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, result);
+        }
+    });
+}
+
 module.exports = {
-    getUserInfo
+    getUserInfo,
+    modifyUserInfo
 };

@@ -21,5 +21,15 @@ module.exports = {
             }
             callback(err, result)
         })
+    },
+    modifyUserInfo: function (params, callback) {
+        let sql = `update user set ${params.field} = ? where userId = ?`;
+        pool.query(sql, [params.value, params.userId], function (err, result) {
+            if (err) {
+                console.error(err);
+                return callback('数据访问异常!');
+            }
+            callback(err, result)
+        })
     }
 };
