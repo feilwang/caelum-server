@@ -5,8 +5,8 @@ let pool = require('../common/mysqlpool').pool;
 
 module.exports = {
     register: function (params, callback) {
-        let sql = `insert into user (phone,password) values(?,?)`;
-        pool.query(sql, [params.phone, params.password], function (err, result) {
+        let sql = `insert into user (phone,password,nickName) values(?,?,?)`;
+        pool.query(sql, [params.phone, params.password, params.nickName], function (err, result) {
             if (err) {
                 return callback('数据访问异常!');
             }
@@ -15,7 +15,7 @@ module.exports = {
     },
     login: function (params, callback) {
         let sql = `select * from user where phone = ? and password = ?`;
-        pool.query(sql,[params.phone, params.password], function (err, result) {
+        pool.query(sql, [params.phone, params.password], function (err, result) {
             if (err) {
                 return callback('数据访问异常!');
             }

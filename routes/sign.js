@@ -3,7 +3,9 @@
  */
 let express = require('express');
 let router = express.Router();
-let signDAO = require('../dao/sign');
+let signService = require('../service/sign');
+let util = require('../common/util');
+
 
 //注册
 router.route('/register').all(function (req, res, next) {
@@ -14,20 +16,22 @@ router.route('/register').all(function (req, res, next) {
         params = req.query || req.params;
     }
     console.log('register params:', params);
-    signDAO.register(params, function (err, result) {
+    signService.register(params, function (err, result) {
         if (err) {
-            return res.json({
+            res.json({
                 success: false,
                 message: err
             });
+        } else {
+            result.token = util.generateToken(result);
+            res.json({
+                data: result,
+                success: true,
+                message: '注册成功！'
+            });
         }
-        res.json({
-            success: true,
-            message: '注册成功！'
-        });
     });
 });
-
 
 //登录
 router.route('/login').all(function (req, res, next) {
@@ -38,27 +42,22 @@ router.route('/login').all(function (req, res, next) {
         params = req.query || req.params;
     }
     console.log('login params:', params);
-    signDAO.login(params, function (err, result) {
+    signService.login(params, function (err, result) {
         if (err) {
-            return res.json({
+            res.json({
                 success: false,
                 message: err
             });
-        }
-        if (result.length > 0) {
-            delete result[0].password;
+        } else {
+            result.token = util.generateToken(result);
             res.json({
-                data: result[0],
+                data: result,
                 success: true,
                 message: '登录成功！'
-            });
-        } else {
-            res.json({
-                success: false,
-                message: '用户名或密码错误！'
             });
         }
     });
 });
+
 
 module.exports = router;

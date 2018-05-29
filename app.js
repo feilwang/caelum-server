@@ -3,7 +3,6 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
-var session = require('express-session');
 
 let indexRouter = require('./routes/index');
 let signRouter = require('./routes/sign');
@@ -19,15 +18,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(session({
-    name: 'sessionid',
-    secret: 'caelum',
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 1000 * 60 * 30 // default session expiration is set to 30min
-    }
-}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', indexRouter, signRouter, usersRouter);
