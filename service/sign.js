@@ -8,41 +8,41 @@ let signDAO = require('../dao/sign');
 
 function register(params, callback) {
     async.waterfall([
-        function (callback) {
+        function (next) {
             //通过手机号查询用户信息
             usersDAO.queryUserByPhone(params, function (err, result) {
                 if (err) {
-                    callback(err);
+                    next(err);
                 } else {
-                    callback(null, result);
+                    next(null, result);
                 }
             });
         },
         //注册
-        function (result, callback) {
+        function (result, next) {
             if (result.length > 0) {
-                callback('该手机号已注册！');
+                next('该手机号已注册！');
             } else {
                 //注册
                 params.password = util.createPassword(params.password);
                 params.nickName = `caelum_${Math.floor(Math.random() * 1000000)}`;
                 signDAO.register(params, function (err, result) {
                     if (err) {
-                        callback(err)
+                        next(err)
                     } else {
-                        callback(null, result)
+                        next(null, result)
                     }
                 });
             }
         },
         //再次查询信息并返回
-        function (result, callback) {
+        function (result, next) {
             usersDAO.queryUserByPhone(params, function (err, result) {
                 if (err) {
-                    callback(err);
+                    next(err);
                 } else {
                     delete result[0].password;
-                    callback(null, result[0]);
+                    next(null, result[0]);
                 }
             });
         }
