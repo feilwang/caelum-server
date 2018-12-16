@@ -3,7 +3,7 @@
  */
 let setting = {
     db: {
-        host: 'wfeil.com',
+        host: 'caelum.wfeil.com',
         user: 'caelum',
         password: 'Feil5224271',
         database: 'caelum'
